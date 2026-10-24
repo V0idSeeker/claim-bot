@@ -1,0 +1,9 @@
+{
+  "eduvia-server": {
+    "repo": "EduVia-Org/EduVia-Server",
+    "path": "migrations/versions",
+    "pattern": "^(\\d{4})_",
+    "guild_id": 1558886701579898900,
+    "channel_id": 1558888933377446062
+  }
+}
