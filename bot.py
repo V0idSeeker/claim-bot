@@ -4,6 +4,8 @@ import asyncio
 import json
 import os
 import re
+import sys
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -311,4 +313,12 @@ async def on_error(interaction: discord.Interaction, error):
 
 
 if __name__ == "__main__":
-    client.run(os.environ["DISCORD_TOKEN"])
+    try:
+        client.run(os.environ["DISCORD_TOKEN"])
+    except discord.HTTPException as e:
+        if e.status != 429:
+            raise
+        # Cloudflare 1015: Discord banned the host's (shared) IP for a while. Wait, then restart fresh.
+        print("Discord rate-limited this host's IP (Cloudflare 1015); retrying in 15 min", flush=True)
+        time.sleep(900)
+        os.execv(sys.executable, [sys.executable, *sys.argv])
